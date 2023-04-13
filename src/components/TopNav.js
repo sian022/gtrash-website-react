@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import app from '../firebase/firebase';
+import app from '../firebase/firebase'
+import { Link } from 'react-router-dom'
+import { useUserAuth } from '../context/UserAuthContext'
 
 function Header() {
-    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+    const [isSidebarOpen, setIsSidebarOpen] = useState(false)
+    const { user, logout } = useUserAuth()
 
     useEffect(() => {
         // Check local storage to see if the sidebar toggle was enabled
@@ -17,6 +20,14 @@ function Header() {
         document.body.classList.toggle('sb-sidenav-toggled')
     }
     
+    const handleLogout = async () => {
+        try {
+            await logout()
+        } catch (err) {
+            console.log(err.message)
+        }
+    }
+
     return (
         <div className='sb-nav-fixed'>
             {/*Top Nav*/}
@@ -34,7 +45,8 @@ function Header() {
                             <li><a className="dropdown-item" >Settings</a></li>
                             <li><a className="dropdown-item">Activity Log</a></li>
                             <li><hr className="dropdown-divider" /></li>
-                            <li><a className="dropdown-item" onClick={() => app.auth().signOut()}>Logout</a></li>
+                            <li><div className="dropdown-item" onClick={handleLogout}>Logout</div></li>
+
                         </ul>
                     </li>
                 </ul>
