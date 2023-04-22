@@ -2,7 +2,7 @@ import React from 'react'
 
 import { Link } from 'react-router-dom'
 
-function StoreOwnerSidebar() {
+function UserSidebar() {
   return (
     <div id="layoutSidenav_nav">
         <nav className="sb-sidenav accordion" id="sidenavAccordion" style={{backgroundColor: "#d0d3d6"}}> 
@@ -10,24 +10,19 @@ function StoreOwnerSidebar() {
                 <div className="nav" >
                     <div className="sb-sidenav-menu-heading" style={{color: "black"}}><i className="fas fa-tachometer-alt"></i> &nbsp; Dashboard</div>
 
-                    {/*Store Owner Access*/}
-                    <Link to='/storeowner' className="nav-link">
-                        <div className="sb-nav-link-icon" style={{color:"black"}}><i className="fa-solid fa-users"></i></div>
-                        Users
-                    </Link>
-                    <Link to='/storeowner/rewards' className="nav-link">
-                        <div className="sb-nav-link-icon" style={{color:"black"}}><i className="fa-solid fa-clipboard-list"></i></div>
-                        Rewards
+                    <Link to='/user' className="nav-link">
+                        <div className="sb-nav-link-icon" style={{color:"black"}}><i className="fas fa-user"></i></div>
+                        My Profile
                     </Link>
                 </div>
             </div>
             <div className="sb-sidenav-footer">
                 <div className="small">Logged in as:</div>
-                Store Owner
+                Student
             </div>
         </nav>
     </div>
   )
 }
 
-export default StoreOwnerSidebar
+export default UserSidebar

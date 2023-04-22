@@ -1,8 +1,5 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
-import { useState } from 'react'
 
-import Header from './components/TopNav'
-import Sidebar from './components/AdminAccess/AdminSidebar'
 import Statistics from './components/Statistics'
 import UsersStoreOwner from './components/StoreOwnerAccess/UsersStoreOwner'
 import RewardsStoreOwner from './components/StoreOwnerAccess/RewardsStoreOwner'
@@ -17,7 +14,9 @@ import WithoutNav from './components/WithoutNav'
 
 import './styles.css'
 import { UserAuthContextProvider } from './context/UserAuthContext'
-import ProtectedRoute from './authentication/ProtectedRoute'
+import AdminProtectedRoute from './authentication/AdminProtectedRoute'
+import StoreProtectedRoute from './authentication/StoreProtectedRoute'
+import UserWithNav from './components/UserAccess/UserWithNav'
 
 function App() {
   return (
@@ -36,15 +35,18 @@ function App() {
                 <main>
                   <div className='container-fluid px-4'>
                     <Routes>
-                      <Route element={<ProtectedRoute><AdminWithNav/></ProtectedRoute>}>
+                      <Route element={<AdminProtectedRoute><AdminWithNav/></AdminProtectedRoute>}>
                         <Route path='/admin' element={<Statistics />} exact/>
                         <Route path='/admin/users' element={<UsersAdmin />} />
                         <Route path='/admin/storeowners' element={<StoreOwnersAdmin />} />
-                        <Route path='/users/myprofile' element={<UserProfile />} />
+                        <Route path='/users' element={<UserProfile />} />
                       </Route>
-                      <Route element={<StoreOwnerWithNav/>}>
-                        <Route path='/storeowner/users' element={<UsersStoreOwner />} />
+                      <Route element={<StoreProtectedRoute><StoreOwnerWithNav/></StoreProtectedRoute>}>
+                        <Route path='/storeowner' element={<UsersStoreOwner />} />
                         <Route path='/storeowner/rewards' element={<RewardsStoreOwner />} />
+                      </Route>
+                      <Route element={<UserWithNav/>}>
+                        <Route path='/user' element={<UserProfile />} />
                       </Route>
                     </Routes>
                   </div>

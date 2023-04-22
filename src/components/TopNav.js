@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import app from '../firebase/firebase'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useUserAuth } from '../context/UserAuthContext'
 
 function Header() {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false)
     const { user, logout } = useUserAuth()
+    const navigate = useNavigate()
 
     useEffect(() => {
         // Check local storage to see if the sidebar toggle was enabled
@@ -23,6 +24,7 @@ function Header() {
     const handleLogout = async () => {
         try {
             await logout()
+            navigate('/')
         } catch (err) {
             console.log(err.message)
         }

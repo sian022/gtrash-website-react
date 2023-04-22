@@ -7,29 +7,108 @@ import {
 } from 'firebase/auth'
 import { auth } from '../firebase/firebase'
 
+import { collection, setDoc, doc } from 'firebase/firestore'
+import { db } from '../firebase/firebase'
+
 const userAuthContext = createContext()
 
 export function UserAuthContextProvider({children}) {
-    const [user, setUser] = useState(null)
+    const [user, setUser] = useState(() => {
+        // Check if there is an authenticated user in localStorage
+        const storedUser = localStorage.getItem('user')
+        return storedUser ? JSON.parse(storedUser) : null
+    })
+
     function signUp(email, password){
-        return createUserWithEmailAndPassword(auth, email, password)
+        return createUserWithEmailAndPassword(auth, email, password).then((userCredential) => {
+            //Once the user creation has happened successfully, we can add the currentUser into firestore
+            //with the appropriate details.
+            const userSignUp = userCredential.user
+            const userRef = doc(collection(db, 'Users'), userSignUp.uid);
+            const createStudent = async (e) => {
+                try {
+                    await setDoc(userRef, {
+                        email: email,
+                        password: password,
+                    })
+                  } catch (err) {
+                    console.log(err.message)
+                  }
+            }
+            createStudent()
+        })
     }
+
+    function signUpStudent(name, email, password, rfid){
+        return createUserWithEmailAndPassword(auth, email, password).then((userCredential) => {
+            const userSignUp = userCredential.user
+            const userRef = doc(collection(db, 'Users'), userSignUp.uid);
+            const createStudent = async (e) => {
+                try {
+                    await setDoc(userRef, {
+                        name: name,
+                        email: email,
+                        password: password,
+                        rfid: rfid,
+                        totalPoints: 0,
+                        rewardsRedeemed: 0,
+                        totalPetBottles: 0,
+                        totalTinCans: 0,
+                        accessLevel: 'student'
+                    })
+                  } catch (err) {
+                    console.log(err.message)
+                  }
+            }
+            createStudent()
+        })
+    }
+    
+    function signUpStore(storeName, ownerName, email, password){
+        return createUserWithEmailAndPassword(auth, email, password).then((userCredential) => {
+            const userSignUp = userCredential.user
+            const userRef = doc(collection(db, 'Users'), userSignUp.uid);
+            const createStore = async (e) => {
+                try {
+                    await setDoc(userRef, {
+                        storeName: storeName,
+                        ownerName: ownerName,
+                        email: email,
+                        password: password,
+                        accessLevel: 'store'
+                    })
+                  } catch (err) {
+                    console.log(err.message)
+                  }
+            }
+            createStore()
+        })
+    }
+
     function login(email, password){
-        return signInWithEmailAndPassword(auth, email, password)
+        return signInWithEmailAndPassword(auth, email, password).then(() => {
+            // Update the user state and store it in localStorage
+            const currentUser = auth.currentUser
+            setUser(currentUser)
+            localStorage.setItem('user', JSON.stringify(currentUser))
+        })
     }
     function logout(){
         return signOut(auth)
     }
+
     useEffect(()=> {
         const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
             setUser(currentUser)
+            // Store the authenticated user in localStorage
+            localStorage.setItem('user', JSON.stringify(currentUser))
         })
         return () => {
             unsubscribe()
         }
     },[])
 
-    return <userAuthContext.Provider value={{ user, login, signUp, logout }}>{children}</userAuthContext.Provider>
+    return <userAuthContext.Provider value={{ user, login, signUp, signUpStudent, signUpStore, logout }}>{children}</userAuthContext.Provider>
 }
 
 export function useUserAuth() {

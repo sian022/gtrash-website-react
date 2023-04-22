@@ -23,21 +23,6 @@ function AdminSidebar() {
                         <div className="sb-nav-link-icon" style={{color:"black"}}><i className="fa-solid fa-store"></i></div>
                         Store Owners
                     </Link>
-
-                    {/*User Access*/}
-                    <div className="sb-sidenav-menu-heading" style={{color: "black"}}> &nbsp; User Access</div>
-                    <Link to='/users/myprofile' className="nav-link">
-                        <div className="sb-nav-link-icon" style={{color:"black"}}><i className="fa-solid fa-users"></i></div>
-                        User Profile
-                    </Link>
-
-                    {/*Login Temp
-                    <div className="sb-sidenav-menu-heading" style={{color: "black"}}> &nbsp; Login Temp</div>
-                    <Link to='/login' className="nav-link">
-                        <div className="sb-nav-link-icon" style={{color:"black"}}><i className="fa-solid fa-users"></i></div>
-                        Login
-                    </Link>
-                    */}
                 </div>
             </div>
             <div className="sb-sidenav-footer">

@@ -1,18 +1,18 @@
 import React from 'react'
 import Header from '../TopNav'
-import AdminSidebar from './AdminSidebar'
+import UserSidebar from './UserSidebar'
 import { Outlet } from 'react-router'
 import { useUserAuth } from '../../context/UserAuthContext'
 
-function AdminWithNav() {
+function UserWithNav() {
   const { user } = useUserAuth()
   return (
     <div>
         <Header/>
-        <AdminSidebar/>
+        <UserSidebar/>
         <Outlet/>
     </div>
   )
 }
 
-export default AdminWithNav
+export default UserWithNav
