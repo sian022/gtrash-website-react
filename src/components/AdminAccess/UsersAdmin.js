@@ -1,8 +1,7 @@
-import React from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import { DataTable } from 'simple-datatables'
 import 'simple-datatables/dist/style.css'
 
-import { useState, useRef, useEffect } from 'react'
 import EditUserModal from '../modals/EditUserModal'
 import DeleteUserModal from '../modals/DeleteUserModal'
 import AddUserModal from '../modals/AddUserModal'
@@ -15,7 +14,7 @@ function UsersAdmin() {
     const [selectedUserEdit, setSelectedUserEdit] = useState('')
     const [selectedUserDelete, setSelectedUserDelete] = useState('')
     const studentsRef = collection(db, "Users")
-    const q = query(studentsRef, where("accessLevel", "==", "student"));
+    const q = query(studentsRef, where("accessLevel", "==", "student"))
 
     useEffect(() => {
         const getUsers = async () => {

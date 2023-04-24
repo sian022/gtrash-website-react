@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import app from '../firebase/firebase'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { useUserAuth } from '../context/UserAuthContext'
 
 function Header() {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false)
-    const { user, logout } = useUserAuth()
+    const { logout } = useUserAuth()
     const navigate = useNavigate()
 
     useEffect(() => {

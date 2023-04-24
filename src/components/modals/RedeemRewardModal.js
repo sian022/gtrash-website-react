@@ -1,15 +1,6 @@
 import React, { useState } from 'react'
 
-function RedeemRewardModal() {
-    const [userId, setUserId] = useState('')
-    const [userName, setUserName] = useState('')
-    const [totalPoints, setTotalPoints] = useState('')
-    const [rewardItemIdOrName, setRewardItemIdOrName] = useState('')
-    
-    const handleRewardRedemption = () => {
-
-    }
-    
+function RedeemRewardModal(props) {
     return (
     <div>
         <div className="modal fade" id="redeemRewardModal" tabIndex="-1" aria-labelledby="redeemRewardModalLabel" aria-hidden="true">
@@ -23,15 +14,15 @@ function RedeemRewardModal() {
                         <form id="rewardForm">
                             <div className="mb-3">
                                 <label htmlFor="userId" className="form-label">User ID</label>
-                                <input type="text" className="form-control" id="userId" disabled="disabled"/>
+                                <input type="text" className="form-control" id="userId" defaultValue={props.userInfo.id} disabled/>
                             </div>
                             <div className="mb-3">
                                 <label htmlFor="userName" className="form-label">Name</label>
-                                <input type="text" className="form-control" id="userName" disabled="disabled"/>
+                                <input type="text" className="form-control" id="userName" defaultValue={props.userInfo.name} disabled/>
                             </div>
                             <div className="mb-3">
                                 <label htmlFor="totalPoints" className="form-label">Points</label>
-                                <input type="text" className="form-control" id="totalPoints" disabled="disabled"/>
+                                <input type="text" className="form-control" id="totalPoints" defaultValue={props.userInfo.totalPoints} disabled/>
                             </div>      
                             <div className="mb-3">
                                 <label htmlFor="rewardItemIdOrName" className="form-label">Reward ID/Name</label>

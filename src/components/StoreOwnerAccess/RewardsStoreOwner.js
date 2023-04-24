@@ -1,19 +1,34 @@
-import React from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import { DataTable } from 'simple-datatables'
 import 'simple-datatables/dist/style.css'
 
-import { useRef, useEffect } from 'react'
-import rewardsDummy from '../../rewardsDummy'
 import AddRewardModal from '../modals/AddRewardModal'
 import EditRewardModal from '../modals/EditRewardModal'
 import DeleteRewardModal from '../modals/DeleteRewardModal'
 
+import { collection, getDocs, query, where } from 'firebase/firestore'
+import { db } from '../../firebase/firebase'
+
 function RewardsStoreOwner() {
+    const [rewards, setRewards] = useState([])
+    const [selectedRewardEdit, setSelectedRewardEdit] = useState('')
+    const [selectedRewardDelete, setSelectedRewardDelete] = useState('')
+    const rewardsRef = collection(db, 'Rewards')
     const tableRef = useRef(null)
 
     useEffect(() => {
-        const table = new DataTable(tableRef.current);
-    },[])
+        const getRewards = async () => {
+          const data = await getDocs(rewardsRef)
+          setRewards(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
+        }
+        getRewards()
+    }, [])
+
+    useEffect(() => {
+        if(rewards.length > 0 && tableRef.current){
+            const table = new DataTable(tableRef.current)
+        }
+    },[rewards])
 
     return (
         <div>
@@ -23,7 +38,6 @@ function RewardsStoreOwner() {
                     <table ref={tableRef}>
                         <thead>
                             <tr>
-                                <th>Reward ID</th>
                                 <th>Name</th>
                                 <th>Equivalent Points</th>
                                 <th>Stock</th>
@@ -33,8 +47,7 @@ function RewardsStoreOwner() {
                         </thead>
                         <tfoot>
                             <tr>
-                                <th>Reward ID</th>
-                                <th>Agent</th>
+                                <th>Name</th>
                                 <th>Equivalent Points</th>
                                 <th>Stock</th>
                                 <th>Attachment</th>
@@ -42,18 +55,17 @@ function RewardsStoreOwner() {
                             </tr>
                         </tfoot>
                         <tbody>
-                            {rewardsDummy.map(rewardsDumm => (
-                                <tr key={rewardsDumm.rewardId}>
-                                    <td>{rewardsDumm.rewardId}</td>
-                                    <td>{rewardsDumm.rewardName}</td>
-                                    <td>{rewardsDumm.equivalentPoints}</td>
-                                    <td>{rewardsDumm.stock}</td>
-                                    <td>{rewardsDumm.stock}</td>
+                            {rewards.map(reward => (
+                                <tr key={reward.id}>
+                                    <td>{reward.rewardName}</td>
+                                    <td>{reward.rewardEquivalentPoints}</td>
+                                    <td>{reward.rewardStock}</td>
+                                    <td>No Attachment</td>
                                     <td>
-                                        <button type="button" className="btn btn-primary btn-block btn-sm" title="Edit Reward" data-bs-toggle="modal" data-bs-target="#editRewardModal">
+                                        <button type="button" className="btn btn-primary btn-block btn-sm" title="Edit Reward" data-bs-toggle="modal" data-bs-target="#editRewardModal" onClick={() => {setSelectedRewardEdit(reward)}}>
                                             <i className="fa fa-pencil-square"></i>
                                         </button> &nbsp;
-                                        <button type="button" className="btn btn-danger btn-block btn-sm" title="Delete Reward" data-bs-toggle="modal" data-bs-target="#deleteRewardModal">
+                                        <button type="button" className="btn btn-danger btn-block btn-sm" title="Delete Reward" data-bs-toggle="modal" data-bs-target="#deleteRewardModal" onClick={() => {setSelectedRewardDelete(reward)}}>
                                             <i className="fa-solid fa-trash"></i>
                                         </button>
                                     </td>
@@ -61,8 +73,8 @@ function RewardsStoreOwner() {
                             ))} 
                         </tbody>
                     </table>
-                    <EditRewardModal/>
-                    <DeleteRewardModal/>
+                    <EditRewardModal rewardInfo = {selectedRewardEdit}/>
+                    <DeleteRewardModal rewardInfo = {selectedRewardDelete}/>
                 </div>
             </div>
                             

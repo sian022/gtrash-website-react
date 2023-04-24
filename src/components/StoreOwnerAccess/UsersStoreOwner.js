@@ -1,38 +1,32 @@
-import React from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import { DataTable } from 'simple-datatables'
 import 'simple-datatables/dist/style.css'
 
-import { useState, useRef, useEffect } from 'react'
-import dummy from '../../dummy'
 import RedeemRewardModal from '../modals/RedeemRewardModal'
 
+import { collection, getDocs, query, where } from 'firebase/firestore'
+import { db } from '../../firebase/firebase'
+
 function UsersStoreOwner() {
-    //Simple Datatable Hooks
-    const tableRef = useRef(null)
+    const [users, setUsers] = useState([])
+    const [selectedUserRewardRedeem, setSelectedUserRewardRedeem] = useState('')
+    const studentsRef = collection(db, "Users")
+    const q = query(studentsRef, where("accessLevel", "==", "student"))
 
     useEffect(() => {
-        const table = new DataTable(tableRef.current);
-    },[])
+        const getUsers = async () => {
+          const data = await getDocs(q)
+          setUsers(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
+        }
+        getUsers()
+    }, [])
 
-    //Set Modal Values
-    const [selectedUser, setSelectedUser] = useState({})
-
-    const handleRedeemRewardClick = (e) => {
-        const button = e.target;
-        const row = button.closest('tr');
-        const userId = row.cells[0].textContent;
-        const userName = row.cells[1].textContent;
-        const totalPoints = row.cells[2].textContent;
-        console.log(userId)
-        setSelectedUser({
-            userId,
-            userName,
-            totalPoints,
-        });
-        document.getElementById("userId").value = userId;
-        document.getElementById("userName").value = userName;  
-        document.getElementById("totalPoints").value = totalPoints; 
-    }
+    const tableRef = useRef(null)
+    useEffect(() => {
+        if(users.length > 0 && tableRef.current){
+            const table = new DataTable(tableRef.current)
+        }
+    },[users])
 
     return (
         <div>
@@ -42,7 +36,6 @@ function UsersStoreOwner() {
                     <table ref={tableRef}>
                         <thead>
                             <tr>
-                                <th>User ID</th>
                                 <th>Name</th>
                                 <th>Total Points</th>
                                 <th>Rewards Redeemed</th>
@@ -53,7 +46,6 @@ function UsersStoreOwner() {
                         </thead>
                         <tfoot>
                             <tr>
-                                <th>User ID</th>
                                 <th>Name</th>
                                 <th>Total Points</th>
                                 <th>Rewards Redeemed</th>
@@ -63,25 +55,26 @@ function UsersStoreOwner() {
                             </tr>
                         </tfoot>
                         <tbody>
-                            {dummy.map(dumm => (
-                                <tr key={dumm.userId}>
-                                    <td>{dumm.userId}</td>
-                                    <td>{dumm.userName}</td>
-                                    <td>{dumm.totalPoints}</td>
-                                    <td>{dumm.rewardsRedemeed}</td>
-                                    <td>{dumm.totalPetBottles}</td>
-                                    <td>{dumm.totalTinCans}</td>
+                            {users.map(user => (
+                                <tr key={user.id}>
+                                    <td>{user.name}</td>
+                                    <td>{user.totalPoints}</td>
+                                    <td>{user.rewardsRedeemed}</td>
+                                    <td>{user.totalPetBottles}</td>
+                                    <td>{user.totalTinCans}</td>
                                     <td>
                                         <button 
-                                        type="button" className="btn btn-primary btn-block btn-sm" title="Redeem Reward" id="redeemReward" data-bs-toggle="modal" data-bs-target="#redeemRewardModal" onClick={handleRedeemRewardClick}>
-                                            <i className="fa-solid fa-clipboard-list"></i> Redeem Reward
+                                        type="button" className="btn btn-primary btn-block btn-sm" title="Redeem Reward" id="redeemReward" data-bs-toggle="modal" data-bs-target="#redeemRewardModal" onClick={()=>{
+                                            setSelectedUserRewardRedeem(user)
+                                        }}>
+                                            <i className="fa-solid fa-clipboard-list" ></i> Redeem Reward
                                         </button>
                                     </td>
                                 </tr>
                             ))} 
                         </tbody>
                     </table>
-                    <RedeemRewardModal/>
+                    <RedeemRewardModal userInfo={selectedUserRewardRedeem}/>
                 </div>
             </div>
         </div>

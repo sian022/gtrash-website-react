@@ -11,6 +11,7 @@ import { db } from '../../firebase/firebase'
 
 function StoreOwnersAdmin() {
     const [stores, setStores] = useState([])
+    const [selectedStoreEdit, setSelectedStoreEdit] = useState('')
     const [selectedStoreDelete, setSelectedStoreDelete] = useState('')
     const storesRef = collection(db, "Users")
     const q = query(storesRef, where("accessLevel", "==", "store"));
@@ -68,7 +69,9 @@ function StoreOwnersAdmin() {
                                     </td>
                                     <td>
                                         <button 
-                                        type="button" className="btn btn-primary btn-block btn-sm" title="Edit Store" id="editStore" data-bs-toggle="modal" data-bs-target="#editStoreModal">
+                                        type="button" className="btn btn-primary btn-block btn-sm" title="Edit Store" id="editStore" data-bs-toggle="modal" data-bs-target="#editStoreModal" onClick={()=>{
+                                            setSelectedStoreEdit(store)
+                                        }}>
                                             <i className="fa fa-pencil-square"></i>
                                         </button> &nbsp;
                                         <button type="button" className="btn btn-danger btn-block btn-sm" title="Delete Store" id="deleteStore" data-bs-toggle="modal" data-bs-target="#deleteStoreOwnerModal" onClick={() => {setSelectedStoreDelete(store)}}><i className="fa-solid fa-trash"></i></button>
@@ -78,7 +81,7 @@ function StoreOwnersAdmin() {
                         </tbody>
                     </table>
                     <SeeStoreRewardsModal/>
-                    <EditStoreModal/>
+                    <EditStoreModal storeInfo={selectedStoreEdit}/>
                     <DeleteStoreOwnerModal storeInfo={selectedStoreDelete}/>
                 </div>
             </div>

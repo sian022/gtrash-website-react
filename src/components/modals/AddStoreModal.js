@@ -1,11 +1,5 @@
 import React, { useState, useRef } from 'react'
 import { useUserAuth } from '../../context/UserAuthContext'
-import {
-    createUserWithEmailAndPassword,
-    signInWithEmailAndPassword,
-    signOut,
-    onAuthStateChanged,
-} from 'firebase/auth'
 
 function AddStoreModal() {
     const { signUpStore } = useUserAuth()

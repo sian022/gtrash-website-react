@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react'
 
-import { collection, doc, updateDoc } from 'firebase/firestore'
+import { doc, updateDoc } from 'firebase/firestore'
 import { db } from '../../firebase/firebase'
 
 function EditUserModal(props) {
@@ -12,15 +12,20 @@ function EditUserModal(props) {
     const [error, setError] = useState('')
     const closeButtonRef = useRef(null)
 
+    useEffect(() => {
+        setNewName(props.userInfo.name)
+        setNewEmail(props.userInfo.email)
+        setNewPassword(props.userInfo.password)
+    },[props])
+    
     const updateUser = async(id) => {
         try{
             const userDoc = doc(db, 'Users', id)
             const newFields = {name: newName, email: newEmail, password:newPassword}
-            updateDoc(userDoc, newFields)
+            await updateDoc(userDoc, newFields)
             closeButtonRef.current.click()
         } catch(err){
             setError(err.message)
-            console.log(error)
         }
     }
     return (
