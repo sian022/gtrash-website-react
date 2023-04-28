@@ -10,6 +10,7 @@ import Login from './authentication/Login'
 import Signup from './authentication/Signup'
 import AdminWithNav from './components/AdminAccess/AdminWithNav'
 import StoreOwnerWithNav from './components/StoreOwnerAccess/StoreOwnerWithNav'
+import RedeemReward from './components/StoreOwnerAccess/RedeemReward'
 import WithoutNav from './components/WithoutNav'
 
 import './styles.css'
@@ -42,7 +43,8 @@ function App() {
                         <Route path='/users' element={<UserProfile />} />
                       </Route>
                       <Route element={<StoreProtectedRoute><StoreOwnerWithNav/></StoreProtectedRoute>}>
-                        <Route path='/storeowner' element={<UsersStoreOwner />} />
+                        <Route path='/storeowner' element={<RedeemReward />}/>
+                        <Route path='/storeowner/users' element={<UsersStoreOwner />} />
                         <Route path='/storeowner/rewards' element={<RewardsStoreOwner />} />
                       </Route>
                       <Route element={<UserWithNav/>}>

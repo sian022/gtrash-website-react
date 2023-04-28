@@ -74,7 +74,7 @@ function AddUserModal() {
                             </div>
                             <div className="mb-3">
                                 <label htmlFor="userPasswordConfirm" className="form-label">RFID</label>
-                                <input type="password" className="form-control" id="userRfid" placeholder="Confirm rfid"
+                                <input type="text" className="form-control" id="userRfid" placeholder="Confirm rfid"
                                 onChange={(e) => {setNewRfid(e.target.value)}}/>
                             </div>
 

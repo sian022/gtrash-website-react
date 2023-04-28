@@ -24,6 +24,14 @@ function UserProfile() {
     <div>
         <h1 className="mt-4" style={{marginBottom: "20px"}}>My Profile</h1> 
         <h2>Hi {currentUserName}!</h2>
+        <div className='row'>
+          <div className='col-6'>
+            s
+          </div>
+          <div className='col-6'>
+            asd0
+          </div>
+        </div>
     </div>
   )
 }

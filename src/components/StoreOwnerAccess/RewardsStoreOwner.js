@@ -9,17 +9,21 @@ import DeleteRewardModal from '../modals/DeleteRewardModal'
 import { collection, getDocs, query, where } from 'firebase/firestore'
 import { db } from '../../firebase/firebase'
 
+import { useUserAuth } from '../../context/UserAuthContext'
+
 function RewardsStoreOwner() {
+    const { user } = useUserAuth()
+
     const [rewards, setRewards] = useState([])
     const [selectedRewardEdit, setSelectedRewardEdit] = useState('')
     const [selectedRewardDelete, setSelectedRewardDelete] = useState('')
     const rewardsRef = collection(db, 'Rewards')
     const tableRef = useRef(null)
-
     useEffect(() => {
         const getRewards = async () => {
-          const data = await getDocs(rewardsRef)
-          setRewards(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
+            const q = query(rewardsRef, where('storeId','==',user.uid))
+            const data = await getDocs(q)
+            setRewards(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
         }
         getRewards()
     }, [])

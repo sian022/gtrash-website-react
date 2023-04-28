@@ -11,7 +11,11 @@ function StoreOwnerSidebar() {
                     <div className="sb-sidenav-menu-heading" style={{color: "black"}}><i className="fas fa-tachometer-alt"></i> &nbsp; Dashboard</div>
 
                     {/*Store Owner Access*/}
-                    <Link to='/storeowner' className="nav-link">
+                    <Link to='/storeowner' className='nav-link'>
+                        <div className='sb-nav-link-icon' style={{color:"black"}}><i className='fa-solid fa-gift'></i></div>
+                        Redeem
+                    </Link>
+                    <Link to='/storeowner/users' className="nav-link">
                         <div className="sb-nav-link-icon" style={{color:"black"}}><i className="fa-solid fa-users"></i></div>
                         Users
                     </Link>
