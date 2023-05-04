@@ -7,6 +7,8 @@ import RedeemRewardModal from '../modals/RedeemRewardModal'
 import { collection, getDocs, query, where } from 'firebase/firestore'
 import { db } from '../../firebase/firebase'
 
+import { MoonLoader } from 'react-spinners'
+
 function UsersStoreOwner() {
     const [users, setUsers] = useState([])
     const [selectedUserRewardRedeem, setSelectedUserRewardRedeem] = useState('')
@@ -27,6 +29,10 @@ function UsersStoreOwner() {
             const table = new DataTable(tableRef.current)
         }
     },[users])
+
+    if(users.length === 0) {
+        return <div className='spinner'><MoonLoader/></div>
+    }
 
     return (
         <div>

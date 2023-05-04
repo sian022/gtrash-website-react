@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react'
 import { useUserAuth } from '../../context/UserAuthContext'
 
 function AddStoreModal() {
-    const { signUpStore } = useUserAuth()
+    const { signUpStore, user } = useUserAuth()
 
     const [newStoreName, setNewStoreName] = useState('')
     const [newRepresentativeName, setNewRepresentativeName] = useState('')
@@ -16,11 +16,14 @@ function AddStoreModal() {
     const createStore = async (e) => {
         e.preventDefault()
         if(newPassword.length < 6){
-            alert('Must be at least 6 characters')
+            setError('Must be at least 6 characters')
+            return
+        }else if(newPassword != confirmPassword){
+            setError('Passwords do not match')
             return
         }
         try {
-            await signUpStore(newStoreName, newRepresentativeName, newEmail, newPassword)
+            await signUpStore(newStoreName, newRepresentativeName, newEmail, newPassword, user)
             closeButtonRef.current.click()
             
         } catch (err) {
@@ -63,6 +66,7 @@ function AddStoreModal() {
                                     <input type="password" className="form-control" id="storePasswordConfirm" placeholder="Confirm store password"
                                     onChange={(e) => {setConfirmPassword(e.target.value)}}/>
                                 </div>
+                                {error && <div className="alert alert-danger" role="alert">{ error }</div>}
                             </form>                                          
                         </div>
                         <div className="modal-footer">

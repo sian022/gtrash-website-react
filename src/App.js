@@ -7,7 +7,6 @@ import UsersAdmin from './components/AdminAccess/UsersAdmin'
 import StoreOwnersAdmin from './components/AdminAccess/StoreOwnersAdmin'
 import UserProfile from './components/UserAccess/UserProfile'
 import Login from './authentication/Login'
-import Signup from './authentication/Signup'
 import AdminWithNav from './components/AdminAccess/AdminWithNav'
 import StoreOwnerWithNav from './components/StoreOwnerAccess/StoreOwnerWithNav'
 import RedeemReward from './components/StoreOwnerAccess/RedeemReward'
@@ -27,10 +26,9 @@ function App() {
             <Routes>
               <Route element={<WithoutNav />}>
                 <Route exact path='/' element={<Login/>}/>
-                <Route path='/signup' element={<Signup/>}/>
               </Route>
             </Routes>
-          
+
             <div id='layoutSidenav'>
               <div id='layoutSidenav_content'>
                 <main>

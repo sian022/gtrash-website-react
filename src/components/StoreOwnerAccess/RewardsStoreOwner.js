@@ -11,6 +11,8 @@ import { db } from '../../firebase/firebase'
 
 import { useUserAuth } from '../../context/UserAuthContext'
 
+import { MoonLoader } from 'react-spinners'
+
 function RewardsStoreOwner() {
     const { user } = useUserAuth()
 
@@ -33,6 +35,10 @@ function RewardsStoreOwner() {
             const table = new DataTable(tableRef.current)
         }
     },[rewards])
+
+    if(rewards.length === 0){
+        return <div className='spinner'><MoonLoader/></div>
+    }
 
     return (
         <div>

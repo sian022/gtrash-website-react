@@ -51,7 +51,7 @@
         return (
         <div className='bg-secondary'>
             <div id="layoutAuthentication">
-                <div id="layoutAuthentication_content">
+                <div id="layoutAuthentication_content" style={{overflow: 'hidden'}}>
                 <main>
                     <div className="container">
                         <div className="row justify-content-center">
@@ -73,16 +73,10 @@
                                                 <input className="form-check-input" id="inputRememberPassword" type="checkbox" value="" />
                                                 <label className="form-check-label" htmlFor="inputRememberPassword">Remember Password</label>
                                             </div>
-                                            <div className="d-flex align-items-center justify-content-between mt-4 mb-0">
-                                                <a className="small">Forgot Password?</a>
+                                            <div className="d-flex align-items-center justify-content-end mt-4 mb-0">
                                                 <button type="submit" className="btn btn-primary">Login</button>
                                             </div>
                                         </form>
-                                    </div>
-                                    <div className="card-footer text-center py-3">
-                                        <Link to='/signup'>
-                                            <div className="small">Need an account? Sign up!</div>
-                                        </Link>
                                     </div>
                                 </div>
                             </div>

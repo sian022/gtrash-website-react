@@ -4,8 +4,15 @@ import { db } from '../../firebase/firebase'
 import { collection, getDoc, doc } from 'firebase/firestore'
 import { useUserAuth } from '../../context/UserAuthContext'
 
+import { MoonLoader } from 'react-spinners'
+import StudentStatistics from './StudentStatistics'
+import './nopic.png'
+
 function UserProfile() {
-  const [currentUserName, setCurrentUserName] = useState(null)
+  const [currentUserData, setCurrentUserData] = useState([])
+  const [studentNumber, setStudentNumber] = useState('N/A')
+  const [currentPhoneNumber, setCurrentPhoneNumber] = useState('N/A')
+
   let { user } = useUserAuth()
 
   useEffect(() => {
@@ -13,25 +20,52 @@ function UserProfile() {
         return
     }
     const userRef = doc(collection(db, 'Users'), user.uid)
-    const getUserId = async () => {
+    const getUserData = async () => {
         const userData = await getDoc(userRef)
-        setCurrentUserName(userData.data().name)
+        setCurrentUserData(userData.data())
     }
-    getUserId()
-}, [])
+    getUserData()
+  }, [])
+
+  if(currentUserData.length === 0){
+    return <div className='spinner'><MoonLoader/></div>
+  }
 
   return (
-    <div>
-        <h1 className="mt-4" style={{marginBottom: "20px"}}>My Profile</h1> 
-        <h2>Hi {currentUserName}!</h2>
-        <div className='row'>
-          <div className='col-6'>
-            s
-          </div>
-          <div className='col-6'>
-            asd0
+    <div className='container-fluid mt-4'>
+      <div className='row row-eq-height'>
+        <div className='col-xl-8'>
+          <div className="card mb-4 h-100" >
+            <div className='card-header' style={{background: '#737678'}}>
+              <h2 className='fw-b text-white'>Personal Information</h2>
+            </div>
+            <div className="card-body" style={{background: '#d0d3d6'}}>
+              <div className='row'>
+                <div className='col-xl-6'>
+                  <p><strong>Name:</strong> <br/> {currentUserData.name}</p>
+                  <p><strong>E-mail:</strong> <br/> {currentUserData.email}</p>
+                </div>
+                <div className='col-xl-6'>
+                  <p><strong>Student #:</strong> <br/> {studentNumber}</p>
+                  <p><strong>Phone #:</strong> <br/> {currentPhoneNumber}</p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
+        <div className='col-xl-4'>
+          <div className="card mb-4 h-100">
+            <div className='card-header' style={{background: '#737678'}}>
+              <h2 className='fw-b text-white'>Total Points</h2>
+            </div>
+            <div className="card-body d-flex justify-content-center align-items-center" style={{background: '#d0d3d6'}}>
+                <strong className='fs-1'>{currentUserData.totalPoints} Points</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <StudentStatistics currentUserData={currentUserData}/>
     </div>
   )
 }

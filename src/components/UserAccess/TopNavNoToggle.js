@@ -1,28 +1,10 @@
-import React, { useEffect, useState } from 'react'
+import React, {useEffect} from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useUserAuth } from '../context/UserAuthContext'
+import { useUserAuth } from '../../context/UserAuthContext'
 
-function Header() {
-    const [isSidebarOpen, setIsSidebarOpen] = useState(false)
+function TopNavNoToggle() {
     const { logout } = useUserAuth()
     const navigate = useNavigate()
-
-    useEffect(() => {
-        //Default toggled
-        document.body.classList.toggle('sb-sidenav-toggled', false)
-        localStorage.setItem('sb|sidebar-toggle', false)
-        // Check local storage to see if the sidebar toggle was enabled
-        const isSidebarToggled = localStorage.getItem('sb|sidebar-toggle') === 'true'
-        setIsSidebarOpen(isSidebarToggled)
-    }, [])
-
-    const handleSidebarToggle = () => {
-        const isToggled = !isSidebarOpen;
-        setIsSidebarOpen(isToggled);
-        localStorage.setItem('sb|sidebar-toggle', isToggled)
-        document.body.classList.toggle('sb-sidenav-toggled')
-    }
-    
     const handleLogout = async () => {
         try {
             await logout()
@@ -32,15 +14,19 @@ function Header() {
         }
     }
 
+
+    useEffect(() => {
+        localStorage.setItem('sb|sidebar-toggle', true)
+        document.body.classList.toggle('sb-sidenav-toggled', true)
+    },[])
+
     return (
-        <div className='sb-nav-fixed'>
+        <div>
             {/*Top Nav*/}
             <nav className="sb-topnav navbar navbar-expand navbar-dark" style={{backgroundColor: "#002476"}}>
                 {/* Navbar Brand*/}
                 <a className=
                 "navbar-brand ps-3 col-4 pe-4 me-3">G-Trash</a>
-                {/* Sidebar Toggle*/}
-                <button className="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" onClick={handleSidebarToggle}><i className="fas fa-bars"></i></button>
                 {/* Navbar*/}
                 <ul className="navbar-nav ms-auto me-0 me-md-3 my-2 my-md-0">
                     <li className="nav-item dropdown">
@@ -60,4 +46,4 @@ function Header() {
     )
 }
 
-export default Header
+export default TopNavNoToggle

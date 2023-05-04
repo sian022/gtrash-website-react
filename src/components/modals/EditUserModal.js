@@ -8,6 +8,7 @@ function EditUserModal(props) {
     const [newEmail, setNewEmail] = useState('')
     const [newPassword, setNewPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
+    const [rfid, setRfid] = useState('')
 
     const [error, setError] = useState('')
     const closeButtonRef = useRef(null)
@@ -19,9 +20,16 @@ function EditUserModal(props) {
     },[props])
     
     const updateUser = async(id) => {
+        if(newPassword.length < 6){
+            setError('Must be at least 6 characters')
+            return
+        }else if(newPassword != confirmPassword){
+            setError('Passwords do not match')
+            return
+        }
         try{
             const userDoc = doc(db, 'Users', id)
-            const newFields = {name: newName, email: newEmail, password:newPassword}
+            const newFields = {name: newName, email: newEmail, password:newPassword, rfid:rfid}
             await updateDoc(userDoc, newFields)
             closeButtonRef.current.click()
         } catch(err){
@@ -57,7 +65,16 @@ function EditUserModal(props) {
                                 <div className="mb-3">
                                     <label htmlFor="editPassword" className="form-label">Password</label>
                                     <input type="password" className="form-control" id="editPassword" placeholder="Enter password"  required defaultValue={props.userInfo?.password} onChange={(e)=>{setNewPassword(e.target.value)}}/>
-                                </div>                                   
+                                </div>    
+                                <div className="mb-3">
+                                    <label htmlFor="editConfirmPassword" className="form-label">Confirm Password</label>
+                                    <input type="password" className="form-control" id="editConfirmPassword" placeholder="Confirm password"  required defaultValue={props.userInfo?.password} onChange={(e)=>{setConfirmPassword(e.target.value)}}/>
+                                </div>
+                                <div className="mb-3">
+                                    <label htmlFor="editRfid" className="form-label">RFID</label>
+                                    <input type="text" className="form-control" id="editRfid" placeholder="Enter RFID"  required defaultValue={props.userInfo?.rfid} onChange={(e)=>{setRfid(e.target.value)}}/>
+                                </div>    
+                                {error && <div className="alert alert-danger" role="alert">{ error }</div>}                 
                             </form>                                          
                         </div>
                         <div className="modal-footer mt-3">

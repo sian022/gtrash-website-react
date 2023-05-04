@@ -12,6 +12,12 @@
  */
 
  /*My styles*/
+.spinner {
+  position: fixed;
+  top: 55%;
+  left: 55%;
+  transform: translate(-50%, -50%);
+}
 .reward-cards:focus {
   outline: 2px solid blue !important;
   outline-offset: -2px;

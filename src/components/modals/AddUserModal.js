@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react'
 import { useUserAuth } from '../../context/UserAuthContext'
 
 function AddUserModal() {
-    const { signUpStudent } = useUserAuth()
+    const { signUpStudent, user } = useUserAuth()
 
     const [newName, setNewName] = useState('')
     const [newEmail, setNewEmail] = useState('')
@@ -16,7 +16,10 @@ function AddUserModal() {
     const createUser = async (e) => {
         e.preventDefault()
         if(newPassword.length < 6){
-            alert('Must be at least 6 characters')
+            setError('Must be at least 6 characters')
+            return
+        }else if(newPassword != confirmPassword){
+            setError('Passwords do not match')
             return
         }
         try {
@@ -33,7 +36,7 @@ function AddUserModal() {
               accessLevel: 'student'
             })
             */
-            await signUpStudent(newName, newEmail, newPassword, newRfid)
+            await signUpStudent(newName, newEmail, newPassword, newRfid, user)
             closeButtonRef.current.click()
             
           } catch (err) {

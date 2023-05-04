@@ -8,7 +8,6 @@ import { db } from '../firebase/firebase'
 function AdminProtectedRoute({children}) {
     const [userAccessLevel, setUserAccessLevel] = useState(null)
     let { user } = useUserAuth()
-
     //Protect Admin Access Level Routes
     useEffect(() => {
         if(!user){

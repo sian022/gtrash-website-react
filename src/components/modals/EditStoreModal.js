@@ -21,6 +21,13 @@ function EditStoreModal(props) {
     },[props])
     
     const updateStore = async(id) => {
+        if(newPassword.length < 6){
+            setError('Must be at least 6 characters')
+            return
+        }else if(newPassword != confirmPassword){
+            setError('Passwords do not match')
+            return
+        }
         try{
             const storeDoc = doc(db, 'Users', id)
             const newFields = {storeName: newStoreName, ownerName: newRepresentativeName, email: newEmail, password:newPassword}
@@ -64,7 +71,8 @@ function EditStoreModal(props) {
                                 <div className="mb-3">
                                     <label htmlFor="editPassword" className="form-label">Password</label>
                                     <input type="password" className="form-control" id="editPassword" placeholder="Enter password"  required defaultValue={props.storeInfo?.password} onChange={(e)=>{setNewPassword(e.target.value)}}/>
-                                </div>                                                
+                                </div> 
+                                {error && <div className="alert alert-danger" role="alert">{ error }</div>}                                               
                             </form>                                          
                         </div>
                         <div className="modal-footer mt-3">

@@ -4,6 +4,7 @@ import {
     signInWithEmailAndPassword,
     signOut,
     onAuthStateChanged,
+    updateCurrentUser
 } from 'firebase/auth'
 import { auth } from '../firebase/firebase'
 
@@ -39,7 +40,7 @@ export function UserAuthContextProvider({children}) {
         })
     }
 
-    function signUpStudent(name, email, password, rfid){
+    function signUpStudent(name, email, password, rfid, loggedInUser){
         return createUserWithEmailAndPassword(auth, email, password).then((userCredential) => {
             const userSignUp = userCredential.user
             const userRef = doc(collection(db, 'Users'), userSignUp.uid);
@@ -60,11 +61,13 @@ export function UserAuthContextProvider({children}) {
                     console.log(err.message)
                   }
             }
-            createStudent()
+            createStudent().then(() => {
+                updateCurrentUser(auth, loggedInUser)
+            })
         })
     }
     
-    function signUpStore(storeName, ownerName, email, password){
+    function signUpStore(storeName, ownerName, email, password, loggedInUser){
         return createUserWithEmailAndPassword(auth, email, password).then((userCredential) => {
             const userSignUp = userCredential.user
             const userRef = doc(collection(db, 'Users'), userSignUp.uid);
@@ -81,7 +84,9 @@ export function UserAuthContextProvider({children}) {
                     console.log(err.message)
                   }
             }
-            createStore()
+            createStore().then(() => {
+                updateCurrentUser(auth, loggedInUser)
+            })
         })
     }
 

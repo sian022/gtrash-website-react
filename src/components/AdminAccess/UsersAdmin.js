@@ -9,6 +9,8 @@ import AddUserModal from '../modals/AddUserModal'
 import { collection, getDocs, query, where } from 'firebase/firestore'
 import { db } from '../../firebase/firebase'
 
+import { MoonLoader } from 'react-spinners'
+
 function UsersAdmin() {
     const [users, setUsers] = useState([])
     const [selectedUserEdit, setSelectedUserEdit] = useState('')
@@ -27,9 +29,14 @@ function UsersAdmin() {
     const tableRef = useRef(null)
     useEffect(() => {
         if (users.length > 0 && tableRef.current) {
-          const table = new DataTable(tableRef.current);
+          const table = new DataTable(tableRef.current)
         }
     }, [users]);
+
+    if(users.length === 0){
+        console.log(users.length)
+        return <div className='spinner'><MoonLoader/></div>
+    }
 
     return (
         <div>
@@ -40,6 +47,7 @@ function UsersAdmin() {
                         <thead>
                             <tr>
                                 <th>Name</th>
+                                <th>E-mail</th>
                                 <th>Total Points</th>
                                 <th>Rewards Redeemed</th>
                                 <th>Total PET Bottles</th>
@@ -50,6 +58,7 @@ function UsersAdmin() {
                         <tfoot>
                             <tr>
                                 <th>Name</th>
+                                <th>E-mail</th>
                                 <th>Total Points</th>
                                 <th>Rewards Redeemed</th>
                                 <th>Total PET Bottles</th>
@@ -61,6 +70,7 @@ function UsersAdmin() {
                             {users.map(user => (
                                 <tr key={user.id}>
                                     <td>{user.name}</td>
+                                    <td>{user.email}</td>
                                     <td>{user.totalPoints}</td>
                                     <td>{user.rewardsRedeemed}</td>
                                     <td>{user.totalPetBottles}</td>

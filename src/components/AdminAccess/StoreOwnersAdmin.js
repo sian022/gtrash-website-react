@@ -9,6 +9,8 @@ import SeeStoreRewardsModal from '../modals/SeeStoreRewardsModal'
 import { collection, getDocs, query, where } from 'firebase/firestore'
 import { db } from '../../firebase/firebase'
 
+import { MoonLoader } from 'react-spinners'
+
 function StoreOwnersAdmin() {
     const [stores, setStores] = useState([])
     const [selectedStoreEdit, setSelectedStoreEdit] = useState('')
@@ -34,6 +36,10 @@ function StoreOwnersAdmin() {
         }
     }, [stores]);
 
+    if(stores.length === 0){
+        return <div className='spinner'><MoonLoader/></div>
+    }
+
     return (
         <div>
         <h1 className="mt-4" style={{marginBottom: "20px"}}>Store Owners</h1> 
@@ -44,6 +50,7 @@ function StoreOwnersAdmin() {
                             <tr>
                                 <th>Store Name</th>
                                 <th>Representative</th>
+                                <th>E-mail</th>
                                 <th>Rewards Offered</th>
                                 <th>Actions</th>                         
                             </tr>
@@ -52,6 +59,7 @@ function StoreOwnersAdmin() {
                             <tr>
                                 <th>Store Name</th>
                                 <th>Representative</th>
+                                <th>E-mail</th>
                                 <th>Rewards Offered</th>
                                 <th>Actions</th>
                             </tr>
@@ -61,6 +69,7 @@ function StoreOwnersAdmin() {
                                 <tr key={store.id}>
                                     <td>{store.storeName}</td>
                                     <td>{store.ownerName}</td>
+                                    <td>{store.email}</td>
                                     <td>
                                     <button 
                                         type="button" className="btn btn-primary btn-block btn-sm" title="View Store Rewards" id="seeStoreRewards" data-bs-toggle="modal" data-bs-target="#seeStoreRewardsModal">
