@@ -1,9 +1,12 @@
 import React, { useState, useRef, useEffect } from 'react'
 
-import { doc, updateDoc } from 'firebase/firestore'
+import { doc, updateDoc, collection, query, where, getDocs } from 'firebase/firestore'
 import { db } from '../../firebase/firebase'
 
 function EditStoreModal(props) {
+    const usersRef = collection(db, 'Users')
+    const [snapshot, setSnapshot] = useState(null)
+
     const [newStoreName, setNewStoreName] = useState('')
     const [newRepresentativeName, setNewRepresentativeName] = useState('')
     const [newEmail, setNewEmail] = useState('')
@@ -20,12 +23,24 @@ function EditStoreModal(props) {
         setNewPassword(props.storeInfo.password)
     },[props])
     
+    useEffect(() => {
+        const getUserByEmail = async () => {
+            const studentQuery = query(usersRef, where('accessLevel', '==' ,'store'), where('email', '==', newEmail))
+            const studentQuerySnapshot = await getDocs(studentQuery)
+            setSnapshot(studentQuerySnapshot)
+        }
+        getUserByEmail()
+    },[newEmail])
+
     const updateStore = async(id) => {
         if(newPassword.length < 6){
             setError('Must be at least 6 characters')
             return
         }else if(newPassword != confirmPassword){
             setError('Passwords do not match')
+            return
+        }else if(!snapshot.empty){
+            setError('Email already exists')
             return
         }
         try{
@@ -71,7 +86,11 @@ function EditStoreModal(props) {
                                 <div className="mb-3">
                                     <label htmlFor="editPassword" className="form-label">Password</label>
                                     <input type="password" className="form-control" id="editPassword" placeholder="Enter password"  required defaultValue={props.storeInfo?.password} onChange={(e)=>{setNewPassword(e.target.value)}}/>
-                                </div> 
+                                </div>
+                                <div className="mb-3">
+                                    <label htmlFor="editConfirmPassword" className="form-label">Confirm Password</label>
+                                    <input type="password" className="form-control" id="editConfirmPassword" placeholder="Confirm password"  required defaultValue={props.storeInfo?.password} onChange={(e)=>{setConfirmPassword(e.target.value)}}/>
+                                </div>
                                 {error && <div className="alert alert-danger" role="alert">{ error }</div>}                                               
                             </form>                                          
                         </div>

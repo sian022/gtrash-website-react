@@ -1,7 +1,12 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import { useUserAuth } from '../../context/UserAuthContext'
 
+import { db } from '../../firebase/firebase'
+import { collection, getDocs, where, query } from 'firebase/firestore'
+
 function AddStoreModal() {
+    const usersRef = collection(db, 'Users')
+    const [snapshot, setSnapshot] = useState(null)
     const { signUpStore, user } = useUserAuth()
 
     const [newStoreName, setNewStoreName] = useState('')
@@ -12,6 +17,15 @@ function AddStoreModal() {
 
     const [error, setError] = useState('')
     const closeButtonRef = useRef(null)
+    
+    useEffect(() => {
+        const getUserByEmail = async () => {
+            const studentQuery = query(usersRef, where('accessLevel', '==' ,'store'), where('email', '==', newEmail))
+            const studentQuerySnapshot = await getDocs(studentQuery)
+            setSnapshot(studentQuerySnapshot)
+        }
+        getUserByEmail()
+    },[newEmail])
 
     const createStore = async (e) => {
         e.preventDefault()
@@ -20,6 +34,9 @@ function AddStoreModal() {
             return
         }else if(newPassword != confirmPassword){
             setError('Passwords do not match')
+            return
+        }else if(!snapshot.empty){
+            setError('Email already exists')
             return
         }
         try {

@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 
-import Statistics from './components/Statistics'
+import Statistics from './components/AdminAccess/Statistics'
 import UsersStoreOwner from './components/StoreOwnerAccess/UsersStoreOwner'
 import RewardsStoreOwner from './components/StoreOwnerAccess/RewardsStoreOwner'
 import UsersAdmin from './components/AdminAccess/UsersAdmin'
@@ -28,7 +28,6 @@ function App() {
                 <Route exact path='/' element={<Login/>}/>
               </Route>
             </Routes>
-
             <div id='layoutSidenav'>
               <div id='layoutSidenav_content'>
                 <main>
@@ -56,7 +55,11 @@ function App() {
           </UserAuthContextProvider>
         </Router>
       </div>
-  );
+  )
+}
+
+function Main(){
+
 }
 
 export default App;

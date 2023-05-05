@@ -51,7 +51,7 @@ function StoreOwnersAdmin() {
                                 <th>Store Name</th>
                                 <th>Representative</th>
                                 <th>E-mail</th>
-                                <th>Rewards Offered</th>
+                                {/*<th>Rewards Offered</th>*/}
                                 <th>Actions</th>                         
                             </tr>
                         </thead>
@@ -60,7 +60,7 @@ function StoreOwnersAdmin() {
                                 <th>Store Name</th>
                                 <th>Representative</th>
                                 <th>E-mail</th>
-                                <th>Rewards Offered</th>
+                                {/*<th>Rewards Offered</th>*/}
                                 <th>Actions</th>
                             </tr>
                         </tfoot>
@@ -70,12 +70,14 @@ function StoreOwnersAdmin() {
                                     <td>{store.storeName}</td>
                                     <td>{store.ownerName}</td>
                                     <td>{store.email}</td>
+                                    {/* 
                                     <td>
                                     <button 
                                         type="button" className="btn btn-primary btn-block btn-sm" title="View Store Rewards" id="seeStoreRewards" data-bs-toggle="modal" data-bs-target="#seeStoreRewardsModal">
                                             <i className="fa fa-store"></i> &nbsp; View Store Rewards
                                         </button>
                                     </td>
+                                    */}
                                     <td>
                                         <button 
                                         type="button" className="btn btn-primary btn-block btn-sm" title="Edit Store" id="editStore" data-bs-toggle="modal" data-bs-target="#editStoreModal" onClick={()=>{
@@ -95,7 +97,7 @@ function StoreOwnersAdmin() {
                 </div>
             </div>
 
-            <div className="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#addStoreModal">
+            <div className="btn btn-primary mb-4" type="button" data-bs-toggle="modal" data-bs-target="#addStoreModal">
                 Create new store
             </div>
             <AddStoreModal/>

@@ -1,15 +1,15 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 
 import { Doughnut } from 'react-chartjs-2'
 import {Chart as ChartJS} from 'chart.js/auto'
 
-function DoughnutChart({chartData}) {
+function DoughnutChart({chartData, widthAndHeight}) {
   return (
     <div>
         <Doughnut
         data={chartData}
-        height="220px"
-        width="220px"
+        height={widthAndHeight}
+        width={widthAndHeight}
         options={{ 
             maintainAspectRatio: false,
             plugins: {

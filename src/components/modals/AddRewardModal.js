@@ -27,7 +27,8 @@ function AddRewardModal() {
                 storeId : storeId,
                 rewardName: newName,
                 rewardEquivalentPoints: parseInt(equivalentPoints),
-                rewardStock : parseInt(rewardStock)
+                rewardStock : parseInt(rewardStock),
+                timesRedeemed : 0
             })
             closeButtonRef.current.click()
         }catch(err){

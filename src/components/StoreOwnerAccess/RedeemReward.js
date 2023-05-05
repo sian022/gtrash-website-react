@@ -15,6 +15,7 @@ function RedeemReward() {
     const [redeemingUserId, setRedeemingUserId] = useState(null)
     const [rewards, setRewards] = useState([])
     const [redeemMessage, setRedeemMessage] = useState('initial')
+    const [error, setError] = useState(null)
 
     const [show, setShow] = useState(false)
 
@@ -59,13 +60,15 @@ function RedeemReward() {
                     setRedeemMessage('Not enough points')
                 }else{
                     const userRef = doc(db, 'Users', studentData.id)
+                    const rewardRef = doc(db, 'Rewards', selectedReward.id)
                     await updateDoc(userRef, {totalPoints: studentData.totalPoints - selectedReward.rewardEquivalentPoints})
-                    setRedeemMessage(`Reward ${selectedReward.rewardName} redeem success for ${studentData.name}`)
+                    await updateDoc(rewardRef, {timesRedeemed: selectedReward.timesRedeemed+1, rewardStock: selectedReward.rewardStock-1})
+                    setRedeemMessage(`<strong>${selectedReward.rewardName}</strong> redeem success for <strong/>${studentData.name}</strong>`)
                 }
             }
             setSelectedReward(null)
         }catch(err){
-            console.log(err.message)
+            setError(err.message)
         }
     }
 
@@ -95,10 +98,12 @@ function RedeemReward() {
                     </div>
                 </div>
             </div>
-
+            <div className='mt-4 ms-1 fs-4'>
+                Select a reward:
+            </div>
             <div className='row mt-4'>
                 {rewards.map(reward => (
-                    <div key={reward.id} className='col-sm-3'>
+                    <div key={reward.id} className='col-xl-3'>
                         <div className="card reward-cards mb-4" tabIndex={0} title={reward.rewardName} onClick={() => {handleCardClick(reward.rewardName)}}>
                             <div className="card-body d-flex justify-content-center">
                                 {reward.rewardName}

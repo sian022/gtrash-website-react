@@ -1,9 +1,12 @@
 import React, { useState, useRef, useEffect } from 'react'
 
-import { doc, updateDoc } from 'firebase/firestore'
+import { doc, updateDoc, collection, query, where, getDocs } from 'firebase/firestore'
 import { db } from '../../firebase/firebase'
 
 function EditUserModal(props) {
+    const usersRef = collection(db, 'Users')
+    const [snapshot, setSnapshot] = useState(null)
+
     const [newName, setNewName] = useState('')
     const [newEmail, setNewEmail] = useState('')
     const [newPassword, setNewPassword] = useState('')
@@ -19,12 +22,24 @@ function EditUserModal(props) {
         setNewPassword(props.userInfo.password)
     },[props])
     
+    useEffect(() => {
+        const getUserByEmail = async () => {
+            const studentQuery = query(usersRef, where('accessLevel', '==' ,'student'), where('email', '==', newEmail))
+            const studentQuerySnapshot = await getDocs(studentQuery)
+            setSnapshot(studentQuerySnapshot)
+        }
+        getUserByEmail()
+    },[newEmail])
+
     const updateUser = async(id) => {
         if(newPassword.length < 6){
             setError('Must be at least 6 characters')
             return
         }else if(newPassword != confirmPassword){
             setError('Passwords do not match')
+            return
+        }else if(!snapshot.empty){
+            setError('Email already exists')
             return
         }
         try{

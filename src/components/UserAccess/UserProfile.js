@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 
 import { db } from '../../firebase/firebase'
-import { collection, getDoc, doc } from 'firebase/firestore'
+import { collection, getDoc, doc, getDocs, query, where } from 'firebase/firestore'
 import { useUserAuth } from '../../context/UserAuthContext'
 
 import { MoonLoader } from 'react-spinners'
@@ -9,6 +9,15 @@ import StudentStatistics from './StudentStatistics'
 import './nopic.png'
 
 function UserProfile() {
+  const usersRef = collection(db, 'Users')
+  const q = query(usersRef, where("accessLevel", "==", "student"))
+
+  const [topUsersByPoints, setTopUsersByPoints] = useState([])
+  const [currentUserPointsRank, setCurrentUserPointsRank] = useState(null)
+  const [topUsersByRedemption, setTopUsersByReedemption] = useState([])
+  const [currentUserRedemptionRank, setCurrentUserRedemptionRank] = useState(null)
+
+  const [usersData, setUsersData] = useState([])
   const [currentUserData, setCurrentUserData] = useState([])
   const [studentNumber, setStudentNumber] = useState('N/A')
   const [currentPhoneNumber, setCurrentPhoneNumber] = useState('N/A')
@@ -25,7 +34,29 @@ function UserProfile() {
         setCurrentUserData(userData.data())
     }
     getUserData()
+
+    const getUsersData = async () => {
+      const studentsData = await getDocs(q)
+      setUsersData(studentsData.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
+    }
+    getUsersData()
   }, [])
+
+  useEffect(() => {
+    setTopUsersByPoints(usersData.sort((a, b) => b.totalPoints - a.totalPoints)
+      .map((x) => {
+      return {topName: x.name, topTotalPoints: x.totalPoints}
+    }))
+    setTopUsersByReedemption(usersData.sort((a, b) => b.timesRedeeming - a.timesRedeeming)
+      .map((x) => {
+      return {topName: x.name, topRedeeming: x.timesRedeeming}
+    }))
+  },[usersData])
+
+  useEffect(() => {
+    setCurrentUserPointsRank(topUsersByPoints.findIndex(user => user.topName === currentUserData.name)+1)
+    setCurrentUserRedemptionRank(topUsersByRedemption.findIndex(user => user.topName === currentUserData.name)+1)
+  },[topUsersByPoints, topUsersByRedemption, currentUserData])
 
   if(currentUserData.length === 0){
     return <div className='spinner'><MoonLoader/></div>
@@ -65,7 +96,10 @@ function UserProfile() {
         </div>
       </div>
 
-      <StudentStatistics currentUserData={currentUserData}/>
+      <StudentStatistics currentUserData={currentUserData} 
+      currentUserPointsRank={currentUserPointsRank} 
+      currentUserRedemptionRank={currentUserRedemptionRank}
+      />
     </div>
   )
 }

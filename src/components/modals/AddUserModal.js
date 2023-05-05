@@ -1,7 +1,12 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import { useUserAuth } from '../../context/UserAuthContext'
 
+import { db } from '../../firebase/firebase'
+import { collection, query, where, getDocs } from 'firebase/firestore'
+
 function AddUserModal() {
+    const usersRef = collection(db, 'Users')
+    const [snapshot, setSnapshot] = useState(null)
     const { signUpStudent, user } = useUserAuth()
 
     const [newName, setNewName] = useState('')
@@ -13,29 +18,29 @@ function AddUserModal() {
     const [error, setError] = useState('')
     const closeButtonRef = useRef(null)
 
+    useEffect(() => {
+        const getUserByEmail = async () => {
+            const studentQuery = query(usersRef, where('accessLevel', '==' ,'student'), where('email', '==', newEmail))
+            const studentQuerySnapshot = await getDocs(studentQuery)
+            setSnapshot(studentQuerySnapshot)
+        }
+        getUserByEmail()
+    },[newEmail])
+
     const createUser = async (e) => {
         e.preventDefault()
+        
         if(newPassword.length < 6){
             setError('Must be at least 6 characters')
             return
         }else if(newPassword != confirmPassword){
             setError('Passwords do not match')
             return
+        }else if(!snapshot.empty){
+            setError('Email already exists')
+            return
         }
         try {
-            /*
-            await addDoc(usersRef, {
-              name: newName,
-              email: newEmail,
-              password: newPassword,
-              rfid: newRfid,
-              totalPoints: 0,
-              rewardsRedeemed: 0,
-              totalPetBottles: 0,
-              totalTinCans: 0,
-              accessLevel: 'student'
-            })
-            */
             await signUpStudent(newName, newEmail, newPassword, newRfid, user)
             closeButtonRef.current.click()
             

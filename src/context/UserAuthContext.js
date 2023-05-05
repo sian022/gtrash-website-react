@@ -4,7 +4,8 @@ import {
     signInWithEmailAndPassword,
     signOut,
     onAuthStateChanged,
-    updateCurrentUser
+    updateCurrentUser,
+    deleteUser
 } from 'firebase/auth'
 import { auth } from '../firebase/firebase'
 
@@ -55,6 +56,7 @@ export function UserAuthContextProvider({children}) {
                         rewardsRedeemed: 0,
                         totalPetBottles: 0,
                         totalTinCans: 0,
+                        timesRedeeming: 0,
                         accessLevel: 'student'
                     })
                   } catch (err) {
@@ -102,6 +104,16 @@ export function UserAuthContextProvider({children}) {
         return signOut(auth)
     }
 
+    function deleteUserAuth(userToDelete, loggedInUser){
+        updateCurrentUser(auth, userToDelete)
+        const deletingUser = auth.currentUser;
+        return deleteUser(deletingUser).then(() => {
+            updateCurrentUser(auth, loggedInUser)
+        }).catch((err) => {
+            console.log('Failed delete', err.message)
+        });
+    }
+
     useEffect(()=> {
         const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
             setUser(currentUser)
@@ -113,7 +125,7 @@ export function UserAuthContextProvider({children}) {
         }
     },[])
 
-    return <userAuthContext.Provider value={{ user, login, signUp, signUpStudent, signUpStore, logout }}>{children}</userAuthContext.Provider>
+    return <userAuthContext.Provider value={{ user, login, signUp, signUpStudent, signUpStore, logout, deleteUserAuth }}>{children}</userAuthContext.Provider>
 }
 
 export function useUserAuth() {

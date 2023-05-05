@@ -2,11 +2,16 @@ import React, { useRef } from 'react'
 import { doc, deleteDoc } from 'firebase/firestore'
 import { db } from '../../firebase/firebase'
 
+import { useUserAuth } from '../../context/UserAuthContext'
+
 function DeleteUserModal(props) {
+    const { deleteUserAuth, user } = useUserAuth()
+
     const closeButtonRef = useRef(null)
     const deleteUser = async(id) => {
         const userDoc = doc(db, "Users", id)
         await deleteDoc(userDoc)
+        await deleteUserAuth(id)
         closeButtonRef.current.click()
     }
     return (

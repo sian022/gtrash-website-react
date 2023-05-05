@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react'
-import { DataTable } from 'simple-datatables'
+import { DataTable, setOptions } from 'simple-datatables'
 import 'simple-datatables/dist/style.css'
 
 import EditUserModal from '../modals/EditUserModal'
@@ -31,10 +31,9 @@ function UsersAdmin() {
         if (users.length > 0 && tableRef.current) {
           const table = new DataTable(tableRef.current)
         }
-    }, [users]);
+    }, [users])
 
     if(users.length === 0){
-        console.log(users.length)
         return <div className='spinner'><MoonLoader/></div>
     }
 
@@ -49,7 +48,7 @@ function UsersAdmin() {
                                 <th>Name</th>
                                 <th>E-mail</th>
                                 <th>Total Points</th>
-                                <th>Rewards Redeemed</th>
+                                <th>Times Redeemed</th>
                                 <th>Total PET Bottles</th>
                                 <th>Total Tin Cans</th>
                                 <th>Actions</th>                         
@@ -60,7 +59,7 @@ function UsersAdmin() {
                                 <th>Name</th>
                                 <th>E-mail</th>
                                 <th>Total Points</th>
-                                <th>Rewards Redeemed</th>
+                                <th>Times Redeemed</th>
                                 <th>Total PET Bottles</th>
                                 <th>Total Tin Cans</th>
                                 <th>Actions</th>
@@ -72,7 +71,7 @@ function UsersAdmin() {
                                     <td>{user.name}</td>
                                     <td>{user.email}</td>
                                     <td>{user.totalPoints}</td>
-                                    <td>{user.rewardsRedeemed}</td>
+                                    <td>{user.timesRedeeming}</td>
                                     <td>{user.totalPetBottles}</td>
                                     <td>{user.totalTinCans}</td>
                                     <td>
@@ -93,7 +92,7 @@ function UsersAdmin() {
                 </div>
             </div>
 
-            <div className="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#addUserModal">
+            <div className="btn btn-primary mb-4" type="button" data-bs-toggle="modal" data-bs-target="#addUserModal">
                 Create new user
             </div>
             <AddUserModal/>
