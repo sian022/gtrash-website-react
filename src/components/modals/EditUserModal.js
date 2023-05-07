@@ -20,6 +20,7 @@ function EditUserModal(props) {
         setNewName(props.userInfo.name)
         setNewEmail(props.userInfo.email)
         setNewPassword(props.userInfo.password)
+        setConfirmPassword(props.userInfo.password)
     },[props])
     
     useEffect(() => {
@@ -38,7 +39,7 @@ function EditUserModal(props) {
         }else if(newPassword != confirmPassword){
             setError('Passwords do not match')
             return
-        }else if(!snapshot.empty){
+        }else if(!snapshot.empty && snapshot.docs[0].data().email != newEmail){
             setError('Email already exists')
             return
         }

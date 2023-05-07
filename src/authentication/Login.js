@@ -5,8 +5,9 @@ import { useUserAuth } from '../context/UserAuthContext'
 import { collection, getDocs } from 'firebase/firestore'
 import { db } from '../firebase/firebase'
 
-function Login() {
+function Login(props) {
     const usersRef = collection(db, 'Users')
+    const [isLoggedIn, setIsLoggedIn] = useState(false)
 
     const [users, setUsers] = useState(null)
 
@@ -29,7 +30,7 @@ function Login() {
         setError('')
         try{
             await login(email, password)
-            
+            setIsLoggedIn(true)
             // Find the user object with the matching email
             const loggedInUser = users.find((user) => user.email === email)
 
@@ -47,7 +48,6 @@ function Login() {
             setError(err.message)
         }
     }
-
     return (
     <div className='loginPage bg-secondary'>
         <div id="layoutAuthentication">

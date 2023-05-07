@@ -21,6 +21,7 @@ function EditStoreModal(props) {
         setNewRepresentativeName(props.storeInfo.ownerName)
         setNewEmail(props.storeInfo.email)
         setNewPassword(props.storeInfo.password)
+        setConfirmPassword(props.storeInfo.password)
     },[props])
     
     useEffect(() => {
@@ -39,7 +40,7 @@ function EditStoreModal(props) {
         }else if(newPassword != confirmPassword){
             setError('Passwords do not match')
             return
-        }else if(!snapshot.empty){
+        }else if(!snapshot.empty && snapshot.docs[0].data().email != newEmail){
             setError('Email already exists')
             return
         }

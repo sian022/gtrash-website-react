@@ -23,6 +23,10 @@
   outline-offset: -2px;
 }
 
+.login-page {
+  overflow: hidden;
+}
+
 :root {
   --bs-blue: #0d6efd;
   --bs-indigo: #6610f2;

@@ -1,4 +1,5 @@
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Routes, Outlet } from 'react-router-dom'
+import { useEffect, useState } from 'react'
 
 import Statistics from './components/AdminAccess/Statistics'
 import UsersStoreOwner from './components/StoreOwnerAccess/UsersStoreOwner'
@@ -25,31 +26,33 @@ function App() {
           <UserAuthContextProvider>
             <Routes>
               <Route element={<WithoutNav />}>
-                <Route exact path='/' element={<Login/>}/>
+                <Route exact path='/' element={<Login />}/>
               </Route>
             </Routes>
-            <div id='layoutSidenav'>
-              <div id='layoutSidenav_content'>
-                <main>
-                  <div className='container-fluid px-4'>
-                    <Routes>
-                      <Route element={<AdminProtectedRoute><AdminWithNav/></AdminProtectedRoute>}>
-                        <Route path='/admin' element={<Statistics />} exact/>
-                        <Route path='/admin/users' element={<UsersAdmin />} />
-                        <Route path='/admin/storeowners' element={<StoreOwnersAdmin />} />
-                        <Route path='/users' element={<UserProfile />} />
-                      </Route>
-                      <Route element={<StoreProtectedRoute><StoreOwnerWithNav/></StoreProtectedRoute>}>
-                        <Route path='/storeowner' element={<RedeemReward />}/>
-                        <Route path='/storeowner/users' element={<UsersStoreOwner />} />
-                        <Route path='/storeowner/rewards' element={<RewardsStoreOwner />} />
-                      </Route>
-                      <Route element={<UserWithNav/>}>
-                        <Route path='/user' element={<UserProfile />} />
-                      </Route>
-                    </Routes>
-                  </div>
-                </main>
+            <div className='sb-nav-fixed'>
+              <div id='layoutSidenav'>
+                <div id='layoutSidenav_content'>
+                  <main>
+                    <div className='container-fluid px-4'>
+                      <Routes>
+                        <Route element={<AdminProtectedRoute><AdminWithNav/></AdminProtectedRoute>}>
+                          <Route path='/admin' element={<Statistics />} exact/>
+                          <Route path='/admin/users' element={<UsersAdmin />} />
+                          <Route path='/admin/storeowners' element={<StoreOwnersAdmin />} />
+                          <Route path='/users' element={<UserProfile />} />
+                        </Route>
+                        <Route element={<StoreProtectedRoute><StoreOwnerWithNav/></StoreProtectedRoute>}>
+                          <Route path='/storeowner' element={<RedeemReward />}/>
+                          <Route path='/storeowner/users' element={<UsersStoreOwner />} />
+                          <Route path='/storeowner/rewards' element={<RewardsStoreOwner />} />
+                        </Route>
+                        <Route element={<UserWithNav/>}>
+                          <Route path='/user' element={<UserProfile />} />
+                        </Route>
+                      </Routes>
+                    </div>
+                  </main>
+                </div>
               </div>
             </div>
           </UserAuthContextProvider>
@@ -58,8 +61,4 @@ function App() {
   )
 }
 
-function Main(){
-
-}
-
-export default App;
+export default App

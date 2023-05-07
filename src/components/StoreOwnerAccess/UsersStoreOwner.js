@@ -44,9 +44,7 @@ function UsersStoreOwner() {
                             <tr>
                                 <th>Name</th>
                                 <th>Total Points</th>
-                                <th>Rewards Redeemed</th>
-                                <th>Total PET Bottles</th>
-                                <th>Total Tin Cans</th>
+                                <th>Total Rewards Redeemed</th>
                                 <th>Actions</th>                         
                             </tr>
                         </thead>
@@ -54,9 +52,7 @@ function UsersStoreOwner() {
                             <tr>
                                 <th>Name</th>
                                 <th>Total Points</th>
-                                <th>Rewards Redeemed</th>
-                                <th>Total PET Bottles</th>
-                                <th>Total Tin Cans</th>
+                                <th>Total Rewards Redeemed</th>
                                 <th>Actions</th>
                             </tr>
                         </tfoot>
@@ -65,9 +61,7 @@ function UsersStoreOwner() {
                                 <tr key={user.id}>
                                     <td>{user.name}</td>
                                     <td>{user.totalPoints}</td>
-                                    <td>{user.rewardsRedeemed}</td>
-                                    <td>{user.totalPetBottles}</td>
-                                    <td>{user.totalTinCans}</td>
+                                    <td>{user.timesRedeeming}</td>
                                     <td>
                                         <button 
                                         type="button" className="btn btn-primary btn-block btn-sm" title="Redeem Reward" id="redeemReward" data-bs-toggle="modal" data-bs-target="#redeemRewardModal" onClick={()=>{

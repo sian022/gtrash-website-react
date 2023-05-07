@@ -14,7 +14,7 @@ function RedeemReward() {
     const [selectedReward, setSelectedReward] = useState(null)
     const [redeemingUserId, setRedeemingUserId] = useState(null)
     const [rewards, setRewards] = useState([])
-    const [redeemMessage, setRedeemMessage] = useState('initial')
+    const [redeemMessage, setRedeemMessage] = useState('')
     const [error, setError] = useState(null)
 
     const [show, setShow] = useState(false)
@@ -63,7 +63,8 @@ function RedeemReward() {
                     const rewardRef = doc(db, 'Rewards', selectedReward.id)
                     await updateDoc(userRef, {totalPoints: studentData.totalPoints - selectedReward.rewardEquivalentPoints})
                     await updateDoc(rewardRef, {timesRedeemed: selectedReward.timesRedeemed+1, rewardStock: selectedReward.rewardStock-1})
-                    setRedeemMessage(`<strong>${selectedReward.rewardName}</strong> redeem success for <strong/>${studentData.name}</strong>`)
+                    setRedeemMessage(`${selectedReward.rewardName} redeem success for ${studentData.name}`)
+                    document.getElementById('rfidInput').value = ''
                 }
             }
             setSelectedReward(null)
