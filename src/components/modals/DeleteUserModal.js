@@ -11,7 +11,7 @@ function DeleteUserModal(props) {
     const deleteUser = async(id) => {
         const userDoc = doc(db, "Users", id)
         await deleteDoc(userDoc)
-        await deleteUserAuth(id)
+        await deleteUserAuth(id, user.uid)
         closeButtonRef.current.click()
     }
     return (
@@ -27,8 +27,8 @@ function DeleteUserModal(props) {
                         Are you sure you want to delete user?                     
                     </div>
                     <div className="modal-footer">
-                    <button type="button" className="btn btn-secondary"data-bs-dismiss="modal" ref={closeButtonRef}>Close</button>
-                    <button type="button" className="btn btn-danger" onClick={()=>{deleteUser(props.userInfo.id); console.log(props.userInfo)}}>Confirm delete</button>
+                    <button type="button" className="btn btn-secondary"data-bs-dismiss="modal" ref={closeButtonRef} onClick={() => {console.log(props.userInfo, user.uid)}}>Close</button>
+                    <button type="button" className="btn btn-danger" onClick={()=>{deleteUser(props.userInfo.id);}}>Confirm delete</button>
                     </div>
                 </div>
             </div>

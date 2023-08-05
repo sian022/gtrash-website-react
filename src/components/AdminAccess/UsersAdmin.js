@@ -97,7 +97,7 @@ function UsersAdmin() {
                 </div>
             </div>
 
-            <div className="btn btn-primary mb-4" type="button" data-bs-toggle="modal" data-bs-target="#addUserModal" onClick={() => {console.log(users)}}>
+            <div className="btn btn-primary mb-4" type="button" data-bs-toggle="modal" data-bs-target="#addUserModal">
                 Create new user
             </div>
             <AddUserModal/>

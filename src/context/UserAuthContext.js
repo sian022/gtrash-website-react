@@ -106,9 +106,11 @@ export function UserAuthContextProvider({children}) {
 
     function deleteUserAuth(userToDelete, loggedInUser){
         updateCurrentUser(auth, userToDelete)
+        console.log(auth.currentUser)
         const deletingUser = auth.currentUser;
         return deleteUser(deletingUser).then(() => {
             updateCurrentUser(auth, loggedInUser)
+            console.log(auth.currentUser)
         }).catch((err) => {
             console.log('Failed delete', err.message)
         });
