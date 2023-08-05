@@ -63,9 +63,9 @@ function UserProfile() {
   }
 
   return (
-    <div className='container-fluid mt-4'>
+    <div className='container-fluid mt-4 '>
       <div className='row row-eq-height'>
-        <div className='col-xl-8'>
+        <div className='col-xl-8 mb-3 mb-xl-0'>
           <div className="card mb-4 h-100" >
             <div className='card-header' style={{background: '#737678'}}>
               <h2 className='fw-b text-white'>Personal Information</h2>

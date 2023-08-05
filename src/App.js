@@ -1,6 +1,4 @@
-import { BrowserRouter as Router, Route, Routes, Outlet } from 'react-router-dom'
-import { useEffect, useState } from 'react'
-
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import Statistics from './components/AdminAccess/Statistics'
 import UsersStoreOwner from './components/StoreOwnerAccess/UsersStoreOwner'
 import RewardsStoreOwner from './components/StoreOwnerAccess/RewardsStoreOwner'
@@ -12,23 +10,23 @@ import AdminWithNav from './components/AdminAccess/AdminWithNav'
 import StoreOwnerWithNav from './components/StoreOwnerAccess/StoreOwnerWithNav'
 import RedeemReward from './components/StoreOwnerAccess/RedeemReward'
 import WithoutNav from './components/WithoutNav'
-
 import './styles.css'
-import { UserAuthContextProvider } from './context/UserAuthContext'
+import { useUserAuth } from './context/UserAuthContext'
 import AdminProtectedRoute from './authentication/AdminProtectedRoute'
 import StoreProtectedRoute from './authentication/StoreProtectedRoute'
 import UserWithNav from './components/UserAccess/UserWithNav'
 
 function App() {
+  const { user } = useUserAuth()
   return (
       <div>
         <Router>
-          <UserAuthContextProvider>
             <Routes>
               <Route element={<WithoutNav />}>
                 <Route exact path='/' element={<Login />}/>
               </Route>
             </Routes>
+            {user && 
             <div className='sb-nav-fixed'>
               <div id='layoutSidenav'>
                 <div id='layoutSidenav_content'>
@@ -54,8 +52,7 @@ function App() {
                   </main>
                 </div>
               </div>
-            </div>
-          </UserAuthContextProvider>
+            </div>}
         </Router>
       </div>
   )

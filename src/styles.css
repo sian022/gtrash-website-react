@@ -11388,7 +11388,8 @@ body {
 .sb-sidenav-toggled #layoutSidenav #layoutSidenav_nav {
   transform: translateX(0);
 }
-.sb-sidenav-toggled #layoutSidenav #layoutSidenav_content:before {
+
+.sb-sidenav-toggled #layoutSidenav #layoutSidenav_content:before:not(.user-with-nav) {
   content: "";
   display: block;
   position: absolute;

@@ -6,7 +6,7 @@ import DeleteStoreOwnerModal from '../modals/DeleteStoreOwnerModal'
 import AddStoreModal from '../modals/AddStoreModal'
 import SeeStoreRewardsModal from '../modals/SeeStoreRewardsModal'
 
-import { collection, getDocs, query, where } from 'firebase/firestore'
+import { collection, getDocs, onSnapshot, query, where } from 'firebase/firestore'
 import { db } from '../../firebase/firebase'
 
 import { MoonLoader } from 'react-spinners'
@@ -24,8 +24,13 @@ function StoreOwnersAdmin() {
     //Stores useEffect
     useEffect(() => {
         const getStores = async () => {
-            const data = await getDocs(q);
-            setStores(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
+            const data = await onSnapshot(q, (querySnapshot) => {
+                const storeData = []
+                querySnapshot.forEach((doc) => {
+                    storeData.push({...doc.data(), id: doc.id})
+                })
+                setStores(storeData)
+            })
         }
         getStores()
     }, [])

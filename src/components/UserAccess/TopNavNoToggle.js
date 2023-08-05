@@ -14,7 +14,6 @@ function TopNavNoToggle() {
         }
     }
 
-
     useEffect(() => {
         localStorage.setItem('sb|sidebar-toggle', true)
         document.body.classList.toggle('sb-sidenav-toggled', true)

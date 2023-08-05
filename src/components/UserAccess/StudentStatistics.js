@@ -47,7 +47,7 @@ function StudentStatistics({currentUserData, currentUserPointsRank, currentUserR
     return (
         <div className='mt-4'>     
             <div className="row">
-                <div className="col-xl-6">
+                <div className="col-xl-6 mb-3 mb-xl-0">
                     <div className="card mb-4 h-100">
                         <div className="card-header">
                             <i className="fa-solid fa-trash"></i>
@@ -58,7 +58,7 @@ function StudentStatistics({currentUserData, currentUserPointsRank, currentUserR
                         </div>
                     </div>
                 </div>
-                <div className="col-xl-3">
+                <div className="col-xl-3 mb-3 mb-xl-0">
                     <div className="card mb-4 h-100">
                         <div className='card-header' style={{background: '#737678'}}>
                             <h2 className='fw-b text-white'>Points Ranking</h2>
@@ -68,7 +68,7 @@ function StudentStatistics({currentUserData, currentUserPointsRank, currentUserR
                         </div>
                     </div>
                 </div>
-                <div className="col-xl-3">
+                <div className="col-xl-3 mb-3 mb-xl-0">
                     <div className="card mb-4 h-100">
                         <div className='card-header' style={{background: '#737678'}}>
                             <h2 className='fw-b text-white'>Redemption Ranking</h2>

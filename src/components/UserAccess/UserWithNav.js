@@ -6,7 +6,7 @@ import { useUserAuth } from '../../context/UserAuthContext'
 function UserWithNav() {
   const { user } = useUserAuth()
   return (
-    <div>
+    <div className='user-with-nav'>
         <TopNavNoToggle/>
         <Outlet/>
     </div>
