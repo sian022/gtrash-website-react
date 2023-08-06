@@ -6,7 +6,7 @@ import AddRewardModal from '../modals/AddRewardModal'
 import EditRewardModal from '../modals/EditRewardModal'
 import DeleteRewardModal from '../modals/DeleteRewardModal'
 
-import { collection, getDocs, query, where } from 'firebase/firestore'
+import { collection, onSnapshot, query, where } from 'firebase/firestore'
 import { db } from '../../firebase/firebase'
 
 import { useUserAuth } from '../../context/UserAuthContext'
@@ -24,15 +24,20 @@ function RewardsStoreOwner() {
     useEffect(() => {
         const getRewards = async () => {
             const q = query(rewardsRef, where('storeId','==',user.uid))
-            const data = await getDocs(q)
-            setRewards(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
+            await onSnapshot(q, (querySnapshot) => {
+                const rewardsData = []
+                querySnapshot.forEach((doc) => {
+                    rewardsData.push({...doc.data(), id: doc.id})
+                })
+                setRewards(rewardsData)
+              })
         }
         getRewards()
     }, [])
 
     useEffect(() => {
         if(rewards.length > 0 && tableRef.current){
-            const table = new DataTable(tableRef.current)
+            new DataTable(tableRef.current)
         }
     },[rewards])
 

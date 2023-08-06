@@ -1,12 +1,12 @@
 import React, { useState, useRef, useEffect } from 'react'
-import { DataTable, setOptions } from 'simple-datatables'
+import { DataTable } from 'simple-datatables'
 import 'simple-datatables/dist/style.css'
 
 import EditUserModal from '../modals/EditUserModal'
 import DeleteUserModal from '../modals/DeleteUserModal'
 import AddUserModal from '../modals/AddUserModal'
 
-import { collection, getDocs, query, where, onSnapshot } from 'firebase/firestore'
+import { collection, query, where, onSnapshot } from 'firebase/firestore'
 import { db } from '../../firebase/firebase'
 
 import { MoonLoader } from 'react-spinners'
@@ -20,7 +20,7 @@ function UsersAdmin() {
 
     useEffect(() => {
         const getUsers = async () => {
-          const data = await onSnapshot(q, (querySnapshot) => {
+          await onSnapshot(q, (querySnapshot) => {
             const usersData = []
             querySnapshot.forEach((doc) => {
                 usersData.push({...doc.data(), id: doc.id})
@@ -34,7 +34,7 @@ function UsersAdmin() {
     const tableRef = useRef(null)
     useEffect(() => {
         if (users.length > 0 && tableRef.current) {
-          const table = new DataTable(tableRef.current)
+          new DataTable(tableRef.current)
         }
     }, [users])
 

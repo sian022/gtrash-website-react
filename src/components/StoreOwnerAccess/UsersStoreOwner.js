@@ -4,7 +4,7 @@ import 'simple-datatables/dist/style.css'
 
 import RedeemRewardModal from '../modals/RedeemRewardModal'
 
-import { collection, getDocs, query, where } from 'firebase/firestore'
+import { collection, onSnapshot, query, where } from 'firebase/firestore'
 import { db } from '../../firebase/firebase'
 
 import { MoonLoader } from 'react-spinners'
@@ -17,8 +17,13 @@ function UsersStoreOwner() {
 
     useEffect(() => {
         const getUsers = async () => {
-          const data = await getDocs(q)
-          setUsers(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
+            await onSnapshot(q, (querySnapshot) => {
+                const usersData = []
+                querySnapshot.forEach((doc) => {
+                    usersData.push({...doc.data(), id: doc.id})
+                })
+                setUsers(usersData)
+            })
         }
         getUsers()
     }, [])
@@ -26,7 +31,7 @@ function UsersStoreOwner() {
     const tableRef = useRef(null)
     useEffect(() => {
         if(users.length > 0 && tableRef.current){
-            const table = new DataTable(tableRef.current)
+            new DataTable(tableRef.current)
         }
     },[users])
 
